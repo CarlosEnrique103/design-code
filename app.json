@@ -1,0 +1,11 @@
+{
+  "expo": {
+    "name": "designcode-app",
+    "slug": "designcode-app",
+    "version": "1.0.0",
+    "assetBundlePatterns": [
+      "**/*"
+    ]
+  },
+  "name": "designcode-app"
+}
