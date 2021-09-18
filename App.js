@@ -1,19 +1,26 @@
 import React from "react";
-import { SafeAreaView, ScrollView } from "react-native";
+import { SafeAreaView, ScrollView, TouchableOpacity } from "react-native";
 import styled from "styled-components";
 import profile from "./assets/avatar.jpg";
 import Card from "./components/Card";
 import Logo from "./components/Logo";
 import { NotificationIcon } from "./components/Icons";
 import Course from "./components/Course";
+import Menu from "./components/Menu";
 
 export default function App() {
+	const openMenu = () => {
+		console.log("open");
+	};
 	return (
 		<Container>
+			<Menu />
 			<SafeAreaView>
 				<ScrollView style={{ height: "100%" }}>
 					<TitleBar>
-						<Avatar source={profile} />
+						<TouchableOpacity onPress={openMenu}>
+							<Avatar source={profile} />
+						</TouchableOpacity>
 						<Profile>
 							<Title>Welcome back</Title>
 							<Name>Juan Carlos</Name>
