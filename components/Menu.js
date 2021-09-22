@@ -11,6 +11,7 @@ const screenHeight = Dimensions.get("window").height;
 const Menu = () => {
 	const [topValue] = useState(new Animated.Value(screenHeight));
 	const { action } = useSelector((state) => state.menu);
+	const { name, email } = useSelector((state) => state.user.info);
 	const dispatch = useDispatch();
 	useEffect(() => {
 		toggleMenu();
@@ -40,8 +41,8 @@ const Menu = () => {
 		<AnimatedContainer style={{ top: topValue }}>
 			<Cover>
 				<Image source={require("../assets/background2.jpg")} />
-				<Title>Juan Carlos</Title>
-				<Subtitle>juanca@gmail.com</Subtitle>
+				<Title>{name}</Title>
+				<Subtitle>{email}</Subtitle>
 			</Cover>
 			<TouchableOpacity
 				onPress={() => dispatch(closeMenu())}

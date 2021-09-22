@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import {
 	Animated,
+	ActivityIndicator,
 	Easing,
 	SafeAreaView,
 	ScrollView,
@@ -9,22 +10,25 @@ import {
 } from "react-native";
 import { useDispatch, useSelector } from "react-redux";
 import styled from "styled-components";
-import profile from "../assets/avatar.jpg";
 import Card from "../components/Card";
 import Logo from "../components/Logo";
 import { NotificationIcon } from "../components/Icons";
 import Course from "../components/Course";
 import Menu from "../components/Menu";
+import Avatar from "../components/Avatar";
 import { openMenu } from "../features/menu/menuSlice";
+import { fetchUser } from "../features/user/userSlice";
 
 const HomeScreen = () => {
 	const dispatch = useDispatch();
 	const [scaleValue] = useState(new Animated.Value(1));
 	const [opacityValue] = useState(new Animated.Value(1));
 	const { action } = useSelector((state) => state.menu);
-
+	const { name } = useSelector((state) => state.user.info);
+	const loading = useSelector((state) => state.user.loading);
 	useEffect(() => {
 		toggleMenu();
+		dispatch(fetchUser());
 		StatusBar.setBarStyle("dark-content", true);
 	}, []);
 
@@ -60,6 +64,7 @@ const HomeScreen = () => {
 				toValue: 1,
 				useNativeDriver: false,
 			}).start();
+			StatusBar.setBarStyle("dark-content", true);
 		}
 	};
 
@@ -72,16 +77,24 @@ const HomeScreen = () => {
 				<SafeAreaView>
 					<ScrollView style={{ height: "100%" }}>
 						<TitleBar>
-							<TouchableOpacity onPress={() => dispatch(openMenu())}>
-								<Avatar source={profile} />
-							</TouchableOpacity>
-							<Profile>
-								<Title>Welcome back</Title>
-								<Name>Juan Carlos</Name>
-								<NotificationIcon
-									style={{ position: "absolute", right: 20, top: 5 }}
-								/>
-							</Profile>
+							{loading === "idle" ? (
+								<Loading>
+									<ActivityIndicator size='small' color='#4475f2' />
+								</Loading>
+							) : (
+								<React.Fragment>
+									<TouchableOpacity onPress={() => dispatch(openMenu())}>
+										<Avatar />
+									</TouchableOpacity>
+									<Profile>
+										<Title>Welcome back</Title>
+										<Name>{name}</Name>
+										<NotificationIcon
+											style={{ position: "absolute", right: 20, top: 5 }}
+										/>
+									</Profile>
+								</React.Fragment>
+							)}
 						</TitleBar>
 						<ScrollView
 							style={{
@@ -151,10 +164,18 @@ const RootView = styled.View`
 	background-color: black;
 `;
 
+const Loading = styled.View`
+	flex-direction: column;
+	width: 100%;
+	align-items: center;
+	color: #000;
+`;
+
 const Container = styled.View`
 	flex: 1;
 	background-color: #f0f3f5;
-	border-radius: 10px;
+	border-top-left-radius: 10px;
+	border-top-right-radius: 10px;
 	overflow: hidden;
 `;
 
@@ -175,12 +196,6 @@ const Subtitle = styled.Text`
 	text-transform: uppercase;
 `;
 
-const Avatar = styled.Image`
-	width: 44px;
-	height: 44px;
-	border-radius: 22px;
-`;
-
 const Title = styled.Text`
 	font-size: 16px;
 	color: #b8bece;
@@ -195,7 +210,7 @@ const Name = styled.Text`
 
 const TitleBar = styled.View`
 	flex: 1;
-	margin-top: 50px;
+	margin-top: 40px;
 	margin-left: 20px;
 	display: flex;
 	flex-direction: row;
