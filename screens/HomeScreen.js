@@ -19,7 +19,7 @@ import Avatar from "../components/Avatar";
 import { openMenu } from "../features/menu/menuSlice";
 import { fetchUser } from "../features/user/userSlice";
 
-const HomeScreen = () => {
+const HomeScreen = ({ navigation }) => {
 	const dispatch = useDispatch();
 	const [scaleValue] = useState(new Animated.Value(1));
 	const [opacityValue] = useState(new Animated.Value(1));
@@ -115,14 +115,18 @@ const HomeScreen = () => {
 							style={{ paddingBottom: 20 }}
 						>
 							{cards.map(({ title, image, subtitle, caption, logo }, index) => (
-								<Card
+								<TouchableOpacity
 									key={index}
-									background={image}
-									caption={caption}
-									logo={logo}
-									subtitle={subtitle}
-									title={title}
-								/>
+									onPress={() => navigation.navigate("Section")}
+								>
+									<Card
+										background={image}
+										caption={caption}
+										logo={logo}
+										subtitle={subtitle}
+										title={title}
+									/>
+								</TouchableOpacity>
 							))}
 						</ScrollView>
 						<Subtitle>Popular Courses</Subtitle>
