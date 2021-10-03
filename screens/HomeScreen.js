@@ -26,6 +26,7 @@ const HomeScreen = ({ navigation }) => {
 	const { action } = useSelector((state) => state.menu);
 	const { name } = useSelector((state) => state.user.info);
 	const loading = useSelector((state) => state.user.loading);
+
 	useEffect(() => {
 		toggleMenu();
 		dispatch(fetchUser());
@@ -117,7 +118,11 @@ const HomeScreen = ({ navigation }) => {
 							{cards.map(({ title, image, subtitle, caption, logo }, index) => (
 								<TouchableOpacity
 									key={index}
-									onPress={() => navigation.navigate("Section")}
+									onPress={() =>
+										navigation.push("Section", {
+											card: { title, image, subtitle, caption, logo },
+										})
+									}
 								>
 									<Card
 										background={image}
